@@ -47,13 +47,14 @@ For Software:
 
 # Screenshots (Add at least 3)
 ![Screenshot 1](https://drive.google.com/uc?export=view&id=14M11P_0By0JYCD6BFreCBCVc-A1zooBL)
-*Add caption explaining what this shows*
+*Mean comment displayed after time runs out or user fails.*
 
-![Screenshot2](Add screenshot 2 here with proper name)
-*Add caption explaining what this shows*
+![Screenshot 2](https://drive.google.com/uc?export=view&id=1Qhbjl-FmqSt51bKJ8yMIKrIJvT4Ah_2-)
+*User submitting the answer with the progress bar running.*
 
-![Screenshot3](Add screenshot 3 here with proper name)
-*Add caption explaining what this shows*
+![Screenshot 3](https://drive.google.com/uc?export=view&id=1J5v0oWYCznc3Ng8Zku-rE6jtrIjxSNmS)
+
+*The app’s main screen showing a math task with timer and score.*
 
 # Diagrams
 ![Workflow](Add your workflow/architecture diagram here)
