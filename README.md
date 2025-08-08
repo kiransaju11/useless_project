@@ -50,11 +50,11 @@ For Software:
 *Mean comment displayed after time runs out or user fails.*
 
 ![Screenshot 2](https://drive.google.com/uc?export=view&id=1Qhbjl-FmqSt51bKJ8yMIKrIJvT4Ah_2-)
-*User submitting the answer with the progress bar running.*
+*The app’s main screen showing a math task with timer and score.*
 
 ![Screenshot 3](https://drive.google.com/uc?export=view&id=1J5v0oWYCznc3Ng8Zku-rE6jtrIjxSNmS)
 
-*The app’s main screen showing a math task with timer and score.*
+*User submitting the answer with the progress bar running.*
 
 # Diagrams
 ![Workflow](Add your workflow/architecture diagram here)
