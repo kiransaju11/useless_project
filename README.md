@@ -1,53 +1,52 @@
 <img width="3188" height="1202" alt="frame (3)" src="https://github.com/user-attachments/assets/517ad8e9-ad22-457d-9538-a9e62d137cd7" />
 
 
-# [Project Name] 🎯
+# [ RANDOM MATH TASKS] 🎯
 
 
 ## Basic Details
-### Team Name: [Name]
+### Team Name: []
 
 
 ### Team Members
-- Team Lead: [Name] - [College]
-- Member 2: [Name] - [College]
-- Member 3: [Name] - [College]
+- Team Lead: [KIRAN SAJU] - [Muthoot Institute of Technology and Science]
+
 
 ### Project Description
-[2-3 lines about what your project does]
+[It is a basica gamified webpage that can be used to sharpen you math skills on a daily basis.]
 
 ### The Problem (that doesn't exist)
-[What ridiculous problem are you solving?]
+[People are in desperate need of solving randon math problems just after waking up.]
 
 ### The Solution (that nobody asked for)
-[How are you solving it? Keep it fun!]
+[My solution is a simple webpage that can be seen as a game. Where you have to beat your previous high score to exist the page.]
 
 ## Technical Details
 ### Technologies/Components Used
 For Software:
-- [Languages used]
-- [Frameworks used]
-- [Libraries used]
-- [Tools used]
+- [JavaScript,HTML & CSS,Node.js]
+- [Express.js]
+- [None external on frontend (vanilla JS),Google Fonts]
+- [Node.js & npm,VS Code,Browser Developer Tools]
 
 For Hardware:
-- [List main components]
-- [List specifications]
-- [List tools required]
+- [NIL]
 
 ### Implementation
 For Software:
 # Installation
-[commands]
+[npm install express
+node server.js]
 
 # Run
-[commands]
+[bash:node server.js
+browser:http://localhost:3000]
 
 ### Project Documentation
 For Software:
 
 # Screenshots (Add at least 3)
-![Screenshot1](Add screenshot 1 here with proper name)
+![Screenshot 1](https://drive.google.com/uc?export=view&id=14M11P_0By0JYCD6BFreCBCVc-A1zooBL)
 *Add caption explaining what this shows*
 
 ![Screenshot2](Add screenshot 2 here with proper name)
