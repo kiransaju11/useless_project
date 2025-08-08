@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Typing Task App - Fullscreen Challenge</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+  html, body {
+    margin: 0; padding: 0; height: 100%;
+    font-family: 'VT323', monospace;
+    background: #010118;
+    color: #66bbff;
+    overflow: hidden;
+    user-select: none;
+  }
+  #container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+    text-align: center;
+  }
+  #progressBarContainer {
+    width: 80%;
+    background-color: #001144;
+    height: 20px;
+    margin: 15px 0;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  #progressBar {
+    height: 100%;
+    width: 0%;
+    background-color: #3388ff;
+    transition: width 0.1s linear;
+  }
+  input, button, select {
+    font-family: 'VT323', monospace;
+    font-size: 1.8rem;
+    padding: 8px 15px;
+    margin: 5px;
+    border-radius: 5px;
+    border: none;
+    background: #002266;
+    color: #66bbff;
+    outline: none;
+    user-select: text;
+  }
+  input::placeholder {
+    color: #335577;
+  }
+  #answerInput {
+    width: 350px;
+    max-width: 90vw;
+    font-weight: bold;
+    text-align: center;
+    letter-spacing: 0.15em;
+  }
+  #taskDesc {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #99ccff;
+    background: #001133aa;
+    padding: 12px 20px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    user-select: text;
+  }
+  #quitMessage {
+    position: fixed;
+    bottom: 30px;
+    right: 5px;
+    color: #ff4444;
+    font-weight: bold;
+    font-size: 16px;
+    max-width: 160px;
+    text-align: center;
+    user-select: none;
+    pointer-events: none;
+    min-height: 24px;
+  }
+  #quitInput {
+    position: fixed;
+    bottom: 5px;
+    right: 5px;
+    width: 130px;
+    height: 25px;
+    font-size: 12px;
+    opacity: 0.3;
+    background: #002244;
+    color: #66bbff;
+    border: 1px solid #335577;
+    border-radius: 3px;
+    padding-left: 6px;
+  }
+  #quitInput::placeholder {
+    color: #335577;
+  }
+  #message {
+    min-height: 28px;
+    margin-top: 15px;
+    font-weight: 600;
+  }
+  #pointsDisplay {
+    margin: 10px 0 5px 0;
+    font-size: 1.8rem;
+  }
+  #levelsContainer {
+    margin-bottom: 15px;
+  }
+  label {
+    margin-right: 10px;
+    font-size: 1.5rem;
+    user-select: none;
+  }
+
+  /* Big mean comment style */
+  #meanComment {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 4rem;
+    font-weight: 900;
+    color: #ff4444;
+    text-align: center;
+    padding: 20px;
+    background: rgba(0,0,0,0.85);
+    border: 5px solid #ff0000;
+    border-radius: 15px;
+    max-width: 90vw;
+    z-index: 9999;
+  }
+
+  /* Quirky hidden pause button */
+  #secretPause {
+    position: fixed;
+    bottom: 40px;
+    left: 5px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #ff6600;
+    opacity: 0.08;
+    cursor: pointer;
+    z-index: 10000;
+    transition: opacity 0.3s;
+  }
+  #secretPause:hover {
+    opacity: 0.3;
+  }
+
+  /* New exit fullscreen button */
+  #exitFullscreenBtn {
+    position: fixed;
+    bottom: 40px;
+    left: 25px; /* next to pause button */
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #0066ff;
+    opacity: 0.08;
+    cursor: pointer;
+    z-index: 10000;
+    transition: opacity 0.3s;
+  }
+  #exitFullscreenBtn:hover {
+    opacity: 0.3;
+  }
+
+</style>
+</head>
+<body>
+  <div id="container">
+    <h1>Typing Task App - Beat Your High Score!</h1>
+
+    <div id="levelsContainer">
+      <label for="levelSelect">Select Level:</label>
+      <select id="levelSelect">
+        <option value="easy" selected>Easy</option>
+        <option value="medium">Medium</option>
+        <option value="hard">Hard</option>
+      </select>
+    </div>
+
+    <p id="pointsDisplay">
+      Points: <span id="points">0</span> | Streak: <span id="streak">0</span> | High Score: <span id="highScore">0</span>
+    </p>
+
+    <p id="taskDesc">Loading task...</p>
+
+    <div id="progressBarContainer">
+      <div id="progressBar"></div>
+    </div>
+
+    <form id="taskForm">
+      <input type="text" id="answerInput" placeholder="Type your answer here" autocomplete="off" required />
+      <button type="submit">Submit</button>
+    </form>
+
+    <p id="message"></p>
+  </div>
+
+  <div id="quitMessage"></div>
+  <input type="text" id="quitInput" placeholder="Type I QUIT to exit" autocomplete="off" />
+
+  <div id="meanComment"></div>
+  <div id="secretPause" title="(shhh... pause timer)"></div>
+  <div id="exitFullscreenBtn" title="Exit Fullscreen"></div>
+
+<script>
+  // Globals & DOM
+  let currentTask = null;
+  let points = 0;
+  let streak = 0;
+  let highScore = Number(localStorage.getItem('highScore') || '0');
+  let maxTime = 15000; // default easy
+  let startTime = 0;
+  let timerInterval;
+
+  const container = document.getElementById('container');
+  const meanComment = document.getElementById('meanComment');
+  const quitMessage = document.getElementById('quitMessage');
+  const pointsDisplay = document.getElementById('points');
+  const streakDisplay = document.getElementById('streak');
+  const highScoreDisplay = document.getElementById('highScore');
+  const messageDisplay = document.getElementById('message');
+  const progressBar = document.getElementById('progressBar');
+  const answerInput = document.getElementById('answerInput');
+  const quitInput = document.getElementById('quitInput');
+  const secretPause = document.getElementById('secretPause');
+  const exitFullscreenBtn = document.getElementById('exitFullscreenBtn');
+  const submitBtn = document.querySelector('#taskForm button');
+  const levelSelect = document.getElementById('levelSelect');
+
+  const meanCommentsTimeout = [
+    "You ran out of time and totally failed! Pathetic!",
+    "Is that the best you can do? Embarrassing!",
+    "Maybe typing isn't your thing. Try something else!",
+    "Wow, that was slow. Did you even try?",
+    "You quit? Weak sauce!",
+    "Come back when you're actually good!",
+    "Typing like that? No wonder you lost!",
+    "Try harder next time, or just give up now!",
+  ];
+
+  const meanCommentsQuit = [
+    "You gave up so easily? Pathetic loser!",
+    "Coward! At least try before quitting!",
+    "Quitting already? How disappointing!",
+    "Is that all you got? Quitter!",
+    "You ran away like a scared little kid!",
+  ];
+
+  const sassyCongrats = [
+    "Whoa! Look who’s a math wizard now!",
+    "High score smashed! Not bad, smarty pants!",
+    "You crushed that! Even I’m impressed.",
+    "New record! Your brain must be on fire!",
+    "Beat your high score? Show off much?",
+  ];
+
+  function getRandom(arr) {
+    return arr[Math.floor(Math.random() * arr.length)];
+  }
+
+  // Generate math task based on level
+  function generateTask(level) {
+    let a, b, op, answer;
+    if (level === 'easy') {
+      a = Math.floor(Math.random() * 10) + 1;
+      b = Math.floor(Math.random() * 10) + 1;
+      op = getRandom(['+', '-']);
+    } else if (level === 'medium') {
+      a = Math.floor(Math.random() * 20) + 10;
+      b = Math.floor(Math.random() * 20) + 1;
+      op = getRandom(['+', '-', '*']);
+    } else { // hard
+      a = Math.floor(Math.random() * 50) + 30;
+      b = Math.floor(Math.random() * 50) + 10;
+      op = getRandom(['+', '-', '*', '/']);
+      if (op === '/') {
+        // make divisible for integer answer
+        a = b * Math.floor(Math.random() * 10 + 1);
+      }
+    }
+
+    switch(op) {
+      case '+': answer = a + b; break;
+      case '-': answer = a - b; break;
+      case '*': answer = a * b; break;
+      case '/': answer = Math.floor(a / b); break;
+    }
+
+    return {
+      id: Date.now(), // unique-ish id
+      description: `What is ${a} ${op} ${b}?`,
+      answer: answer.toString()
+    };
+  }
+
+  function updateDisplay() {
+    pointsDisplay.textContent = points;
+    streakDisplay.textContent = streak;
+    highScoreDisplay.textContent = highScore;
+  }
+
+  function setInputsDisabled(disabled) {
+    answerInput.disabled = disabled;
+    submitBtn.disabled = disabled;
+  }
+
+  function startTimer() {
+    startTime = Date.now();
+    progressBar.style.width = '0%';
+
+    timerInterval = setInterval(() => {
+      if(timerPaused) return;
+
+      const elapsed = Date.now() - startTime;
+      let percent = (elapsed / maxTime) * 100;
+      if (percent > 100) percent = 100;
+      progressBar.style.width = percent + '%';
+
+      if (percent === 100) {
+        clearInterval(timerInterval);
+        showMeanComment('timeout');
+        exitFullscreenIfAny();
+      }
+    }, 100);
+  }
+
+  function loadTask() {
+    clearInterval(timerInterval);
+    setInputsDisabled(false);
+    messageDisplay.textContent = '';
+    quitMessage.textContent = '';
+
+    currentTask = generateTask(levelSelect.value);
+    document.getElementById('taskDesc').textContent = currentTask.description;
+    answerInput.value = '';
+    answerInput.focus();
+
+    // Adjust time by level
+    if(levelSelect.value === 'easy') maxTime = 15000;
+    else if(levelSelect.value === 'medium') maxTime = 10000;
+    else maxTime = 7000;
+
+    timerPaused = false;
+    startTimer();
+  }
+
+  // Show quit mean comment just above quit input, disappears after 4 seconds
+  function showQuitMessage() {
+    quitMessage.textContent = getRandom(meanCommentsQuit);
+    setTimeout(() => {
+      quitMessage.textContent = '';
+    }, 4000);
+  }
+
+  // Show timeout mean comment in big center style
+  function showTimeoutComment() {
+    container.style.display = 'none';
+    meanComment.style.display = 'block';
+    meanComment.textContent = getRandom(meanCommentsTimeout);
+  }
+
+  function showMeanComment(type) {
+    if(type === 'timeout') {
+      showTimeoutComment();
+    } else if(type === 'quit') {
+      showQuitMessage();
+    } else {
+      meanComment.style.display = 'block';
+      meanComment.textContent = "You lost!";
+    }
+  }
+
+  // Sassy congrats message briefly shown when beating high score
+  function showCongratsMessage() {
+    messageDisplay.style.color = '#33ff33';
+    messageDisplay.textContent = getRandom(sassyCongrats);
+    setTimeout(() => {
+      messageDisplay.textContent = '';
+      messageDisplay.style.color = '#66bbff';
+    }, 2500);
+  }
+
+  document.getElementById('taskForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    clearInterval(timerInterval);
+
+    const answer = answerInput.value.trim();
+    const elapsed = Date.now() - startTime;
+
+    let earnedPoints;
+    if (elapsed < 5000) {
+      earnedPoints = 20;
+    } else if (elapsed >= maxTime) {
+      earnedPoints = 5;
+    } else {
+      earnedPoints = Math.round(20 - ((elapsed - 5000) / (maxTime - 5000)) * 15);
+    }
+
+    if (answer === currentTask.answer) {
+      streak++;
+      points += earnedPoints;
+      if(points > highScore) {
+        highScore = points;
+        localStorage.setItem('highScore', highScore);
+        showCongratsMessage();
+      } else {
+        messageDisplay.style.color = '#66bbff';
+        messageDisplay.textContent = `Correct! You earned ${earnedPoints} points!`;
+      }
+    } else {
+      streak = 0;
+      points = 0;
+      messageDisplay.style.color = '#ff5555';
+      messageDisplay.textContent = `Wrong! Your streak and points have been reset.`;
+    }
+
+    updateDisplay();
+    loadTask();
+  });
+
+  // Fullscreen logic
+  async function requestFullscreen() {
+    try {
+      if (!document.fullscreenElement) {
+        await document.documentElement.requestFullscreen();
+      }
+    } catch (e) {
+      console.warn('Fullscreen request failed:', e);
+    }
+  }
+
+  let forcedExitRequested = false;
+
+  function exitFullscreenIfAny() {
+    if(document.fullscreenElement) {
+      document.exitFullscreen();
+    }
+  }
+
+  exitFullscreenBtn.addEventListener('click', () => {
+    forcedExitRequested = true;
+    exitFullscreenIfAny();
+  });
+
+  document.addEventListener('fullscreenchange', () => {
+    if (!document.fullscreenElement) {
+      if(points < highScore && !forcedExitRequested) {
+        requestFullscreen();
+        messageDisplay.textContent = "You must stay fullscreen until you beat your high score or click the exit button!";
+        setInputsDisabled(true);
+      } else {
+        messageDisplay.textContent = "You exited fullscreen. Good job!";
+        forcedExitRequested = false;
+        setInputsDisabled(false);
+      }
+    } else {
+      setInputsDisabled(false);
+      messageDisplay.textContent = '';
+    }
+  });
+
+  setInterval(() => {
+    if (!document.fullscreenElement) {
+      if(points < highScore && !forcedExitRequested) {
+        requestFullscreen();
+        messageDisplay.textContent = "You must stay fullscreen until you beat your high score or click the exit button!";
+        setInputsDisabled(true);
+      }
+    }
+  }, 500);
+
+  quitInput.addEventListener('input', () => {
+    if(quitInput.value.trim().toUpperCase() === "I QUIT") {
+      messageDisplay.style.color = '#ff4444';
+      messageDisplay.textContent = "Not this time, quitter!";
+      quitInput.value = '';
+      showQuitMessage();
+    }
+  });
+
+  // Secret pause logic
+  let timerPaused = false;
+  let pausedElapsed = 0;
+
+  secretPause.addEventListener('click', () => {
+    if (!timerPaused) {
+      timerPaused = true;
+      clearInterval(timerInterval);
+      pausedElapsed = Date.now() - startTime;
+      messageDisplay.style.color = '#ffcc00';
+      messageDisplay.textContent = '⏸ Timer paused... shhh!';
+    } else {
+      timerPaused = false;
+      startTime = Date.now() - pausedElapsed;
+      messageDisplay.style.color = '#66bbff';
+      messageDisplay.textContent = '▶ Timer resumed!';
+      timerInterval = setInterval(() => {
+        if(timerPaused) return;
+
+        const elapsed = Date.now() - startTime;
+        let percent = (elapsed / maxTime) * 100;
+        if (percent > 100) percent = 100;
+        progressBar.style.width = percent + '%';
+
+        if (percent === 100) {
+          clearInterval(timerInterval);
+          showMeanComment('timeout');
+          exitFullscreenIfAny();
+        }
+      }, 100);
+    }
+  });
+
+  // Load task & fullscreen on first interaction
+  window.addEventListener('load', () => {
+    updateDisplay();
+    loadTask();
+  });
+
+  function onFirstInteraction() {
+    requestFullscreen();
+    window.removeEventListener('click', onFirstInteraction);
+    window.removeEventListener('keydown', onFirstInteraction);
+  }
+  window.addEventListener('click', onFirstInteraction);
+  window.addEventListener('keydown', onFirstInteraction);
+
+  // Change difficulty resets points & reload task
+  levelSelect.addEventListener('change', () => {
+    points = 0;
+    streak = 0;
+    updateDisplay();
+    loadTask();
+  });
+
+</script>
+</body>
+</html>
