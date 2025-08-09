@@ -57,35 +57,12 @@ For Software:
 *User submitting the answer with the progress bar running.*
 
 # Diagrams
-![Workflow](Add your workflow/architecture diagram here)
-*Add caption explaining your workflow*
+![Description](https://drive.google.com/uc?export=view&id=1BMiyqqZ7ybubfHEFV4r5mDp9KjRnv0G2)
+*When the user opens the webpage, they are presented with a timed math task to solve. They type their answer, which is sent to the backend for validation. If correct, their streak and points increase, and a new task is generated with a reset timer. If incorrect or time runs out, their streak and points reset, and a sassy mean comment is displayed. The user cannot exit fullscreen mode unless they beat their high score or click a special exit button. Attempting to quit by typing “I QUIT” shows a cheeky message without exiting fullscreen. A hidden pause button lets the user silently pause and resume the timer, adding a fun secret feature to the game.*
 
-For Hardware:
 
-# Schematic & Circuit
-![Circuit](Add your circuit diagram here)
-*Add caption explaining connections*
 
-![Schematic](Add your schematic diagram here)
-*Add caption explaining the schematic*
 
-# Build Photos
-![Components](Add photo of your components here)
-*List out all components shown*
-
-![Build](Add photos of build process here)
-*Explain the build steps*
-
-![Final](Add photo of final product here)
-*Explain the final build*
-
-### Project Demo
-# Video
-[Add your demo video link here]
-*Explain what the video demonstrates*
-
-# Additional Demos
-[Add any extra demo materials/links]
 
 ## Team Contributions
 - [Name 1]: [Specific contributions]
