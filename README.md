@@ -13,7 +13,7 @@
 
 
 ### Project Description
-[It is a basica gamified webpage that can be used to sharpen you math skills on a daily basis.]
+[It is a basic gamified webpage that can be used to sharpen you math skills on a daily basis.]
 
 ### The Problem (that doesn't exist)
 [People are in desperate need of solving randon math problems just after waking up.]
