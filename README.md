@@ -65,9 +65,8 @@ For Software:
 
 
 ## Team Contributions
-- [Name 1]: [Specific contributions]
-- [Name 2]: [Specific contributions]
-- [Name 3]: [Specific contributions]
+- [KIRAN SAJU]: [Frontend and Backend]
+
 
 ---
 Made with ❤️ at TinkerHub Useless Projects 
